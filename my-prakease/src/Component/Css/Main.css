@@ -1,0 +1,19 @@
+/* Add styles for perfect width and height for image */
+.main-img {
+    max-width: 400px; /* Max width of 350px, but responsive */
+    height: auto;
+  }
+  
+  /* Make it responsive for different screen sizes */
+  @media (max-width: 768px) {
+    .main-img {
+      max-width: 300px; /* For smaller screens, adjust image size */
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .main-img {
+      max-width: 250px; /* For extra small screens, further reduce the image size */
+    }
+  }
+  
