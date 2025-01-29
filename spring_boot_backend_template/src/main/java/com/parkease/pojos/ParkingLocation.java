@@ -2,12 +2,17 @@ package com.parkease.pojos;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.parkease.eums.Role;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,9 +26,19 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="parking_locations")
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ParkingLocation {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -83,7 +98,7 @@ public class ParkingLocation {
     @UpdateTimestamp
     private Timestamp updatedOn;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private User user;
     

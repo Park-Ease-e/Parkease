@@ -27,7 +27,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    //private Long userId;
+	@JsonProperty(access = Access.READ_ONLY)
+    private Long userId;
 
     @NotBlank(message = "First name is required")
     private String firstName;
@@ -35,9 +36,12 @@ public class UserDto {
     @NotBlank(message = "Last name is required")
     private String lastName;
     
+    @JsonProperty(access = Access.WRITE_ONLY)
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+    
+    private String profileImagePath;
     
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

@@ -1,5 +1,6 @@
 package com.parkease.globalexceptionhandler;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,5 +39,11 @@ public class GlobalExceptionHandler {
 	{
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body("Error : "+e.getMessage());
+	}
+	@ExceptionHandler(IOException.class)
+	public ResponseEntity<?> handleIOException(IOException e)
+	{
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body("Error : An error occurred while processing the resource. Please try again or check your file and internet connection.");
 	}
 }
