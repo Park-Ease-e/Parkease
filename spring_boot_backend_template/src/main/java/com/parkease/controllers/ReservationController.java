@@ -28,7 +28,7 @@ public class ReservationController {
 		return ResponseEntity.ok(reservationService.insertReservation(dto));
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/all")
 	public ResponseEntity<?> getReservations()
 	{
 		return ResponseEntity.ok(reservationService.getReservations());
@@ -41,7 +41,7 @@ public class ReservationController {
 	}
 	
 	@GetMapping("/Date/{date}")
-	public ResponseEntity<?> getUserReservations(@PathVariable LocalDate date)
+	public ResponseEntity<?> getReservationsByDate(@PathVariable LocalDate date)
 	{
 		return ResponseEntity.ok(reservationService.getReservationsByDate(date));
 	}

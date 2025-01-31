@@ -25,7 +25,7 @@ public class FaqController {
 	{
 		return ResponseEntity.ok(faqService.insertFAQ(faqDto));
 	}
-	@GetMapping("/")
+	@GetMapping("/all")
 	public ResponseEntity<?> getAllFAQs()
 	{
 		return ResponseEntity.ok(faqService.getAllFAQs());

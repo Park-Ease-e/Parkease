@@ -82,7 +82,7 @@ public class ParkingLocationController {
 		return ResponseEntity.ok(parkingLocationService.locationStatus(id));
 	}
 	
-	@GetMapping("/CIty/{city}")
+	@GetMapping("/cIty/{city}")
 	public ResponseEntity<?> getLocationByCity(@PathVariable String city)
 	{
 		return ResponseEntity.ok(parkingLocationService.getLocationByCity(city));

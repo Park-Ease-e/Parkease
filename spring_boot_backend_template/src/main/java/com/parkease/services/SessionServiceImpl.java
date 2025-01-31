@@ -47,7 +47,7 @@ public class SessionServiceImpl implements SessionService {
 	@Scheduled(fixedRate = 60000)
 	public void processReservations()
 	{
-		log.info("hi");
+		log.info("is any reservation sheduled");
 		LocalDateTime now = LocalDateTime.now();
         Timestamp currentTime = Timestamp.valueOf(now);
         LocalDateTime startTime = now.minusMinutes(1);
@@ -65,6 +65,24 @@ public class SessionServiceImpl implements SessionService {
         	System.out.println("Ho gya session activate");
         }
 	}
+	
+	@Scheduled(fixedRate = 60000)
+	public void endAlert()
+	{
+		log.info("is any reservation completed");
+		LocalDateTime now = LocalDateTime.now();
+        Timestamp currentTime = Timestamp.valueOf(now);
+        LocalDateTime startTime = now.minusMinutes(1);
+        LocalDateTime endTime = now.plusMinutes(1);
+        Timestamp startTimestamp = Timestamp.valueOf(startTime);
+        Timestamp endTimestamp = Timestamp.valueOf(endTime);
+        List<Reservation> reservations = reservationDao.findByEndTimeBetween(startTimestamp, endTimestamp);
+        for(Reservation reservation:reservations)
+        {
+        	System.out.println("alert to session end");
+        }
+	}
+	
 
 	@Override
 	public BigDecimal markComplete(long id) {

@@ -39,15 +39,15 @@ public class DemoApplication {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll()) // Allow all requests
-            .csrf((csrf) -> csrf.disable()) // Disable CSRF (use with caution!)
-            .httpBasic().disable() // Disable basic authentication
-            .formLogin().disable() // Disable form login
-            .logout().disable(); // Disable logout
-
-        return http.build();
-    }
+//	@Bean
+//    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//            .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll()) // Allow all requests
+//            .csrf((csrf) -> csrf.disable()) // Disable CSRF (use with caution!)
+//            .httpBasic().disable() // Disable basic authentication
+//            .formLogin().disable() // Disable form login
+//            .logout().disable(); // Disable logout
+//
+//        return http.build();
+//    }
 }

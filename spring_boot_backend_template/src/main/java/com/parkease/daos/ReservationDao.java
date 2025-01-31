@@ -20,5 +20,7 @@ public interface ReservationDao extends JpaRepository<Reservation,Long>{
 	
 	@Query("SELECT r.seat.seatId FROM Reservation r WHERE r.status = 'CONFIRMED' AND r.location.locationId = :locationId")
 	 List<Long> findBookedSeatIdsByLocation(@Param("locationId") long locationId);
+
+	List<Reservation> findByEndTimeBetween(Timestamp startTimestamp, Timestamp endTimestamp);
 }
 

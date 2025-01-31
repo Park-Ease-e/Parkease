@@ -9,6 +9,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,16 +24,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.parkease.dto.UserDto;
 import com.parkease.dto.UserLogInDto;
+import com.parkease.security.JwtUtils;
 import com.parkease.services.UserService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 	
 	@Autowired	
 	private UserService userService; 
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtUtils jwtUtils;
 	
 	private static final String UPLOAD_DIR = "uploads/profile_images/";
 	
@@ -44,10 +54,18 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody @Valid UserLogInDto userLoginDto)
 	{
-		return ResponseEntity.status(HttpStatus.OK).body(userService.logInUser(userLoginDto));
+		Authentication successfulAuth = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken
+				(userLoginDto.getEmail(),userLoginDto.getPassword()));
+		String jwt = jwtUtils.generateJwtToken(successfulAuth);
+		userLoginDto.setJwt(jwt);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(userLoginDto);
+		
+		//return ResponseEntity.status(HttpStatus.OK).body(userService.logInUser(userLoginDto));
 	}
 	
-	@GetMapping
+	@GetMapping("/")
 	public ResponseEntity<?> getAllUsers()
 	{
 		List<UserDto> userDtos=userService.getAllUsers();
@@ -92,7 +110,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("File is empty or not provided");
 	}
 	
-	@PutMapping("/password/{id}")
+	@PostMapping("/password")
 	public ResponseEntity<?> forgetPassword(@RequestBody UserDto userDto)
 	{
 		return ResponseEntity.ok(userService.forgetPassword(userDto));

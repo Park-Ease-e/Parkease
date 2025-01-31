@@ -1,8 +1,7 @@
 package com.parkease.dto;
 
-import java.time.LocalDate;
-
-import com.parkease.eums.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +18,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLogInDto {
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
@@ -26,4 +26,7 @@ public class UserLogInDto {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
+    
+    @JsonProperty(access = Access.READ_ONLY)
+    private String jwt;
 }
