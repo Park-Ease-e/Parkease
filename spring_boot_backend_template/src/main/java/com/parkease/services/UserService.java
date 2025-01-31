@@ -2,12 +2,9 @@ package com.parkease.services;
 
 import java.util.List;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.parkease.dto.ApiResponse;
 import com.parkease.dto.UserDto;
 import com.parkease.dto.UserLogInDto;
-import com.parkease.pojos.User;
 
 import jakarta.validation.Valid;
 
@@ -24,5 +21,7 @@ public interface UserService {
 	UserDto findByUserId(Long id);
 
 	ApiResponse blockUndblockUser(long id);
+
+	ApiResponse forgetPassword(UserDto userDto);
 
 }

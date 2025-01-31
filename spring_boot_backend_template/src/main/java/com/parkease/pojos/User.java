@@ -92,4 +92,22 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
+    
+    public void addReservation(Reservation reservation)
+    {
+    	this.reservations.add(reservation);
+    	reservation.setUser(this);
+    }
+    
+    public void addTransaction(Transaction transaction)
+    {
+    	this.transactions.add(transaction);
+    	transaction.setUser(this);
+    }
+    
+    public void addReviews(Review review)
+    {
+    	this.reviews.add(review);
+    	review.setUser(this);
+    }
 }

@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService{
 		UserDto user=findByUserId(id);
 		User persistantUser=modelMapper.map(userDto, User.class);
 		persistantUser.setUserId(id);
-		persistantUser.setPassword(user.getPassword());
+		persistantUser.setPassword(encoder.encode(user.getPassword()));
 	    userDao.save(persistantUser);
 	    return new ApiResponse("Profile updated");
 	}
@@ -83,6 +83,16 @@ public class UserServiceImpl implements UserService{
 		else
 			user.setStatus(true);
 		return new ApiResponse("User status updated");
+	}
+
+	@Override
+	public ApiResponse forgetPassword(UserDto userDto) {
+		User user=userDao.findByEmail(userDto.getEmail())
+				.orElseThrow(() -> 
+				new ResourceNotFoundException("User not found"));
+		user.setPassword(encoder.encode(user.getPassword()));
+		userDao.save(user);
+		return new ApiResponse("Password Updated");
 	}
 
 }

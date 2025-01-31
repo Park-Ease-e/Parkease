@@ -13,7 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +37,7 @@ public class Seat {
 	@JoinColumn(name="location_id",nullable=false)
 	private ParkingLocation location;
 	
-	@NotBlank(message = "Seat number is required")
+	@NotNull(message = "Seat number is required")
     @Column(name="seat_number")
 	private Integer seatNumber;
 	
@@ -46,4 +46,10 @@ public class Seat {
 	
 	@OneToMany(mappedBy = "seat", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+	
+	public void addReservations(Reservation reservation)
+    {
+    	this.reservations.add(reservation);
+    	reservation.setSeat(this);
+    }
 }

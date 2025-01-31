@@ -91,4 +91,10 @@ public class UserController {
             }
             return ResponseEntity.badRequest().body("File is empty or not provided");
 	}
+	
+	@PutMapping("/password/{id}")
+	public ResponseEntity<?> forgetPassword(@RequestBody UserDto userDto)
+	{
+		return ResponseEntity.ok(userService.forgetPassword(userDto));
+	}
 }
