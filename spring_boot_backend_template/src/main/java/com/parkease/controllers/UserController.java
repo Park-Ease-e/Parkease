@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.parkease.dto.ApiResponse;
 import com.parkease.dto.UserDto;
 import com.parkease.dto.UserLogInDto;
 import com.parkease.security.JwtUtils;
@@ -47,8 +48,10 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody @Valid UserDto userDto)
 	{
-		UserDto resp=userService.signupUser(userDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
+		ApiResponse response=userService.signupUser(userDto);
+		if(response.getMsg().equals("Registration Sucessfull"))
+			return ResponseEntity.status(HttpStatus.CREATED).body(response);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	}
 	
 	@PostMapping("/login")
@@ -59,7 +62,8 @@ public class UserController {
 				(userLoginDto.getEmail(),userLoginDto.getPassword()));
 		String jwt = jwtUtils.generateJwtToken(successfulAuth);
 		userLoginDto.setJwt(jwt);
-		return ResponseEntity.status(HttpStatus.CREATED)
+		userLoginDto.setId(userService.getId(userLoginDto.getEmail()));
+		return ResponseEntity.status(HttpStatus.OK)
 				.body(userLoginDto);
 		
 		//return ResponseEntity.status(HttpStatus.OK).body(userService.logInUser(userLoginDto));
@@ -113,6 +117,7 @@ public class UserController {
 	@PostMapping("/password")
 	public ResponseEntity<?> forgetPassword(@RequestBody UserDto userDto)
 	{
+		System.out.println(userDto);
 		return ResponseEntity.ok(userService.forgetPassword(userDto));
 	}
 }

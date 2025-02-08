@@ -65,7 +65,7 @@ public class User {
     @Past(message = "Birth date must be in the past")
     private LocalDate birthDate;
     
-    @Pattern(regexp = "^\\+?[1-9][0-9]{7,14}$", message = "Invalid phone number format")
+    @Pattern(regexp = "^[1-9][0-9]{7,14}$", message = "Invalid phone number format")
     private String phoneNumber;
 
     @NotNull(message = "Role is required")

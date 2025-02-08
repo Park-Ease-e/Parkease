@@ -3,8 +3,6 @@ package com.parkease.services;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +57,9 @@ public class ReservationServiceImpl implements ReservationService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public ApiResponse insertReservation(ReservationTransactionVehicleWrapperDto dto) {
@@ -92,6 +93,7 @@ public class ReservationServiceImpl implements ReservationService{
 		ParkingLocation location=parkingLocationDao.findById(reservationDto.getLocationId()).orElseThrow(() -> new ResourceNotFoundException("Location not found"));
 		location.addReservation(reservation);
 		reservationDao.save(reservation);
+		emailService.sendReservationDtails(reservation);
 		return new ApiResponse("Booking Successfull");
 	}
 

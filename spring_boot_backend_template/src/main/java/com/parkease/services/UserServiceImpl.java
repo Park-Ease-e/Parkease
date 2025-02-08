@@ -1,6 +1,7 @@
 package com.parkease.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -33,11 +34,14 @@ public class UserServiceImpl implements UserService{
 	private PasswordEncoder encoder;
 	
 	@Override
-	public UserDto signupUser(UserDto userDto) {
+	public ApiResponse signupUser(UserDto userDto) {
+		Optional optional=userDao.findByEmail(userDto.getEmail());
+		if(!optional.isEmpty())
+			return new ApiResponse ("Email already registered");
 		User user=modelMapper.map(userDto, User.class);
 		user.setPassword(encoder.encode(user.getPassword()));
-		User persistentUser=userDao.save(user);
-		return modelMapper.map(persistentUser,UserDto.class);
+		userDao.save(user);
+		return new ApiResponse("Registration Sucessfull");
 	}
 
 	@Override
@@ -90,9 +94,13 @@ public class UserServiceImpl implements UserService{
 		User user=userDao.findByEmail(userDto.getEmail())
 				.orElseThrow(() -> 
 				new ResourceNotFoundException("User not found"));
-		user.setPassword(encoder.encode(user.getPassword()));
+		user.setPassword(encoder.encode(userDto.getPassword()));
 		userDao.save(user);
 		return new ApiResponse("Password Updated");
 	}
 
+	@Override
+	public long getId(String email) {
+		return userDao.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found")).getUserId();
+	}
 }

@@ -43,7 +43,7 @@ public class Reservation {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name="Location_id", nullable=false)
+	@JoinColumn(name="location_id", nullable=false)
 	private ParkingLocation location;
 	
 	@ManyToOne
@@ -55,7 +55,7 @@ public class Reservation {
 	private Vehicle vehicle;
 	
 	@OneToOne
-	@JoinColumn(name="transaction", nullable=false)
+	@JoinColumn(name="transaction_id", nullable=false)
 	private Transaction transaction;
 	
 	@Column(name="reserved_at")

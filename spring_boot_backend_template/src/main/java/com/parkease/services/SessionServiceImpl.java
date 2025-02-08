@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,11 @@ public class SessionServiceImpl implements SessionService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@Scheduled(fixedRate = 60000)
+	@Autowired
+	private EmailService emailService;
+	
+	@Scheduled(fixedRate = 120000)
+	@Async
 	public void processReservations()
 	{
 		log.info("is any reservation sheduled");
@@ -57,6 +62,7 @@ public class SessionServiceImpl implements SessionService {
         List<Reservation> reservations = reservationDao.findByStartTimeBetween(startTimestamp, endTimestamp);
         for(Reservation reservation:reservations)
         {
+        	emailService.sessionStartMail(reservation);
         	Session session=new Session();
         	session.setReservation(reservation);
         	session.setEntryTime(reservation.getStartTime());
@@ -66,7 +72,8 @@ public class SessionServiceImpl implements SessionService {
         }
 	}
 	
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 120000)
+	@Async
 	public void endAlert()
 	{
 		log.info("is any reservation completed");
@@ -79,7 +86,7 @@ public class SessionServiceImpl implements SessionService {
         List<Reservation> reservations = reservationDao.findByEndTimeBetween(startTimestamp, endTimestamp);
         for(Reservation reservation:reservations)
         {
-        	System.out.println("alert to session end");
+        	emailService.sessiontEndMail(reservation);
         }
 	}
 	
@@ -95,6 +102,7 @@ public class SessionServiceImpl implements SessionService {
 		ParkingLocation location = parkingLocationDao.findById(reservation.getLocation().getLocationId()).orElseThrow(() -> new ResourceNotFoundException("Corresponding Location not found"));
 		Duration duration = Duration.between(session.getEndTime().toInstant(),reservation.getEndTime().toInstant());
 		long hoursDifference = duration.toHours()+1;
+		BigDecimal extraCharge =location.getHourlyRate().multiply(new BigDecimal(hoursDifference));
 		return new BigDecimal(hoursDifference).multiply(location.getHourlyRate());
 	}
 

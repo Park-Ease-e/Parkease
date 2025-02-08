@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 
 public interface UserService {
 
-	UserDto signupUser(UserDto userDto);
+	ApiResponse signupUser(UserDto userDto);
 
 	UserDto logInUser(@Valid UserLogInDto userLoginDto);
 
@@ -23,5 +23,7 @@ public interface UserService {
 	ApiResponse blockUndblockUser(long id);
 
 	ApiResponse forgetPassword(UserDto userDto);
+
+	long getId(String email);
 
 }

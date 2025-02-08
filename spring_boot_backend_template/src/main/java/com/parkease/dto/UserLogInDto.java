@@ -18,6 +18,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLogInDto {
+	@JsonProperty(access = Access.READ_ONLY)
+	private long id;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters")
