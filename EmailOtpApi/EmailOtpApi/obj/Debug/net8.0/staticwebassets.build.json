@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "m10CF2DJ+AL0Ah7xDvarnGomlcOd4fobrPSxxsu5nCo=",
+  "Source": "EmailOtpApi",
+  "BasePath": "_content/EmailOtpApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
