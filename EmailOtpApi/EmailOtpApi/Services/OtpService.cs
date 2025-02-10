@@ -8,8 +8,8 @@ namespace EmailOtpApi.Services
 {
     public class OtpService
     {
-        String senderEmail = "chaudhariparag634@gmail.com";
-        String senderPassword = "qjhy djac fiiy xkpx";
+        String senderEmail = "******";
+        String senderPassword = "************";
         public String SendOtp(string recipientEmail)
         {
             try
@@ -47,7 +47,7 @@ namespace EmailOtpApi.Services
 
         internal bool SendEmail(string recipientEmail, string subject, string body)
         {
-            try 
+            try
             {
                 var smtpClient = new SmtpClient("smtp.gmail.com")
                 {
